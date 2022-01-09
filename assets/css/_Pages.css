@@ -1,0 +1,215 @@
+body {
+  overflow: hidden;
+}
+
+.text{
+  background-color: #00000014;
+  border-radius: 5px;
+}
+.text:hover, .text:active, .text:focus{
+  border: 3px solid #297CD3AA; 
+  background-color: #fff2;
+}
+
+@keyframes waiting {
+  0% { background-color: #DDD; }
+  33% { background-color: #DDD; }
+  66% { background-color: #BBB; }
+  100% { background-color: #DDD; }
+}
+hr {
+  color: #868686;
+  height: 2px;
+  background-color: #868686;
+  border: 0;
+}
+h1, h2, h3, h4 {
+  margin: 5px;
+  display: inline;
+}
+
+/*----------------------------------------------------------------*/
+
+.Outils{
+  width: 220px;
+  right: 0;
+  position: fixed;
+  top: 125px;
+  z-index: 3;
+  box-shadow: rgba(0, 0, 40, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  padding: 5Px;
+  height: calc(100vh - 170px);
+  background-color: #fff;
+  border-color: #dcdbdb;
+  border-style: solid hidden solid solid;
+  animation: Outils 2s;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+
+#data{
+  position: relative;
+  top: 240px;
+  box-shadow: 0px 0px 60px 40px rgba(230, 230, 230, 0.78);
+}
+#ctrl, #ctrlFont, #ctrlFontEx, #ctrlAlign{
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  padding: 10px;  
+}
+#ctrlZone{
+  display: none;
+  position: absolute;
+  padding: 10px;
+}
+#ctrlFontEx{
+  height: 200px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+#ctrlFontEx h1, #ctrlFontEx h2, #ctrlFontEx h3, #ctrlFontEx h4{
+  position: relative;
+  top: 5px;
+}
+
+#NewElement{
+  height: 50px;
+  background-color: rgba(230, 230, 230, 0.7);
+}
+
+.zonedrop{
+  display: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 10px;
+  background-color: rgba(200, 200, 200, 0.7);
+}
+.elemdrop{
+  display: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 10px;
+}
+.drag{
+  position: absolute;
+  left: 2%;
+  width: 7px;
+  height: 40px;
+  cursor: grab;
+  background-color: rgb(23, 128, 186);
+  border-radius: 10px;
+}
+.dragEl{
+  position: relative;
+  margin: 0 auto;
+  width: 40px;
+  height: 7px;
+  cursor: grab;
+  background-color: rgb(23, 128, 186);
+  border-radius: 10px;
+}
+/*--- Fin - Titre --- */
+
+#ctrlColorText{
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  padding: 10px 10px 15px;
+}
+#ctrlColorZone{
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  padding: 10px 10px 15px;
+}
+.optn-page{
+  width: 100%;
+  position: absolute;
+  margin: 62px 0 0;
+  background-color: #cecece;
+  height: 50px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  overflow: hidden;
+}
+
+.cur{
+  background-color: #fff2;
+}
+
+.form5{
+  position: relative;
+  z-index: 1;
+  max-width: 50%;
+  width: 200px;
+  padding-left: 45px;
+  text-align: center;
+  display: inline-block;
+}
+.form5 select{
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+
+#page{
+  width: calc(100% - 335px);
+  position: absolute;
+  top: 125px;
+  overflow-y: scroll;
+  margin-left: 45px;
+  height: calc(100vh - 175px);
+  box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+}
+
+.bck{
+  border: 3px solid #00000000;
+}
+.Element {
+  border: 3px solid inherit; 
+  word-wrap: break-word;
+  margin: 5px;
+}
+.Element:hover{
+  border: 3px solid #297CD3AA; 
+  transition: border 0.3s;
+}
+
+/*--------------------- Eléments ---------------------*/
+
+.hr{
+  display: block;
+  position: relative;
+  padding: 2px;
+  margin: 10px 10%;
+  border-radius: 2px;
+  background-color: rgba(255,255,255, 0.7);
+}
+.space{
+  height: 50px;
+  display: block;
+  border: 0px none;
+}
+.zone1 {
+  position: relative;
+  margin: 2% 10% 2% 10%;
+  padding: 2%;
+  border-radius: 10px;
+  display: block;
+  background-color: rgb(198, 6, 25);
+  box-shadow: 0 0 20px 0 rgb(0 0 0 / 50%), 0 5px 5px 0 rgb(0 0 0 / 24%);
+  overflow: hidden;
+}
+.bck{
+  background-color: rgba(230, 230, 230, 0.7);
+}
