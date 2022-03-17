@@ -76,9 +76,18 @@ foreach ($files as $file){
             $JSON['files'][$i]['customimg'] = $IP . 'type/folder.png';
             $JSON['files'][$i]['time'] = date ("d/m/Y H:i:s", filemtime($path . $file));
             $JSON['files'][$i]['fulltime'] = filemtime($path . $file);
-                //$size = folderSize($path . $file);
-            $JSON['files'][$i]['size'] = ''; // sizeFormat($size);
-            $JSON['files'][$i]['fullsize'] = ''; // $size;
+
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                // Windows
+                $JSON['files'][$i]['size'] = '';
+                $JSON['files'][$i]['fullsize'] = '';
+                
+            } else {
+                // Linux
+                $size = folderSize($path . $file);
+                $JSON['files'][$i]['size'] = sizeFormat($size);
+                $JSON['files'][$i]['fullsize'] = $size;
+            }          
 
         } else {
             $JSON['files'][$i]['name'] = substr($file, 0, strrpos($file, '.'));

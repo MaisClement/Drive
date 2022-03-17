@@ -757,7 +757,6 @@ async function getInfo(){
         document.getElementById('disk_usage').innerHTML = data['disk_usage'];
         document.getElementById('disk_perc_usage').style.width = data['disk_perc_usage'] + "%";
         document.getElementById('disk%').innerHTML = data['disk_perc_usage'] + " %";
-        document.getElementById('cache_size').innerHTML = data['cache_size']; 
 
         if (data['disk_perc_usage'] <= 80){
             document.getElementById('disk_perc_usage').style.backgroundColor = "#33A4E2"

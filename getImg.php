@@ -15,12 +15,22 @@ function resizeImage($imagePath, $width, $height) {
     return $imagick->getImageBlob();
 }
 
-if (isset($_GET['p']) && $_GET['p'] != '') {
-    $name = substr($_GET['p'], strrpos($_GET['p'], '/'));
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    // Windows
+    echo file_get_contents('type/jpg.png');
+    
+} else {
+    // Linux
+    if (isset($_GET['p']) && $_GET['p'] != '') {
+        $name = substr($_GET['p'], strrpos($_GET['p'], '/'));
+    
+        $img = resizeImage('/mnt/disk_raid1/files/' . $_GET['p'], 50, 50);
+        echo $img;
+        file_put_contents('/mnt/disk_raid1/cache/' . $name, $img);
+    }
 
-    $img = resizeImage('/mnt/disk_raid1/files/' . $_GET['p'], 50, 50);
-    echo $img;
-    file_put_contents('/mnt/disk_raid1/cache/' . $name, $img);
 }
+
+
 
 ?>

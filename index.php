@@ -115,20 +115,28 @@
             
             <div class="Size-Barre" style="background-color: #ffffff20"></div>
             <div class="Size-Barre" id="disk_perc_usage" style="background-color: #33A4E2; top: -10px; z-index:3; width: 0"></div>
-
+                <br>
             <span class="Color-Size" style="background-color: #4f474e;"></span>
             <span class="Light"> Total disponible</span> <span id="disk_size" class="val">...</span>
                 <br> <span class="Light"> Utilisé </span> <span id="disk_usage" class="val">...</span>
                 <br> <span class="Light"> Soit </span> <span id="disk%" class="val">...</span>
-                <br> <span class="Light"> Dont cache </span> <span id="cache_size" class="val">...</span>
 
-            <hr>
+                <br><br><hr><br> 
             <span class="Options">Paramètres</span>
             <br> <span class="Light"> Afficher les extensions </span> 
                 <label class="toggle-control"> <input type="checkbox" id="displayExtension" onclick="setSettingsCookie(this)"> <span class="control"></span> </label>
 
             <br> <span class="Light"> Affichage Liste </span> 
                 <label class="toggle-control"> <input type="checkbox" id="displayInListMode" onclick="setSettingsCookie(this)"> <span class="control"></span> </label>
+
+                <br><br><hr><br> 
+            <span class="Options">À propos</span> <br> <br> 
+            <a href="https://icones8.fr/" target="_blank" class="linkblue"> Icones par Icones8</a>
+                <br> 
+            <a href="https://www.php.net/manual/fr/book.imagick.php" target="_blank" class="linkblue"> Using ImageMagick </a>
+                <br> <br> 
+            <span> Version 1.2.1 </span> 
+            
             
         </div>
 
