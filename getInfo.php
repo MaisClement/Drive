@@ -4,8 +4,8 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-    $PATH = '/mnt/disk_raid1/files/';
-    $IP = '//192.168.0.11/';
+    $PATH = file_get_contents('PATH.txt');
+    $IP = file_get_contents('IP.txt ');
 
 function folderSize($dir){
     $count_size = 0;
@@ -49,11 +49,28 @@ function sizeFormat($bytes){
     }
 }
 
-$JSON['disk_size'] = sizeFormat(disk_total_space('/mnt/disk_raid1'));
-$JSON['disk_usage'] = sizeFormat(foldersize('/mnt/disk_raid1/'));
+$PATH = file_get_contents('PATH.txt');
+$IP = file_get_contents('IP.txt ');
 
-$JSON['disk_perc_usage'] = round(foldersize('/mnt/disk_raid1/') / disk_total_space('/mnt/disk_raid1') * 10000) / 100;
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    // Windows
+    $disk_size = disk_total_space(substr($PATH, 0, 2));
+    $foler_size = disk_free_space(substr($PATH, 0, 2));
+    
+} else {
+    // Linux
+    $disk_size = disk_total_space('/mnt/disk_raid1');
+    $foler_size = foldersize($PATH);
+}
 
-$JSON['cache_size'] = sizeFormat(foldersize('/mnt/disk_raid1/cache/'));
+
+
+
+$JSON['disk_size'] = sizeFormat($disk_size);
+$JSON['disk_usage'] = sizeFormat($foler_size);
+
+$JSON['disk_perc_usage'] = round($foler_size / $disk_size * 10000) / 100;
+
+// $JSON['cache_size'] = sizeFormat(foldersize('/mnt/disk_raid1/cache/'));
 
 echo json_encode($JSON);

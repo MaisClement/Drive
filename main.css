@@ -25,23 +25,98 @@ body {
 header{
     height: 50px;
     padding: 5px;
-
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-}
-#explorer header {
-    background-color: #820282;
-}
-#viewer header {
-    background-color: #4F474E;
+    color: #fff;
 }
 header img{
     height: 100%;
+}
+header .menu{
+    float: right;
+    cursor: pointer;
+    height: 40px;
+    padding-top: 6px;
+    cursor: pointer;
 }
 header span{
     font-weight: 300;
     font-size: 20px;
     position: relative;
     left: 15px;
+}
+.search .input{
+    top: 6px;
+    width: 35vw;
+    max-width: 500px;
+    min-width: 200px;
+    height: 30px;
+    padding: 3px;
+	border-radius: 5px;
+	cursor: text;
+    background-color: #fff;
+	border: 2px solid #4f474e00;
+    display: inline-block;
+    position: relative;
+}
+.search .input img{
+	width: 30px;
+    height: 30px;
+}
+.search .input input{
+    height: 36px;
+    position: relative;
+    top: -9px;
+    background-color: #0000;
+    border: 0;
+    outline: 0;
+    width: calc(100% - 40px);
+}
+.search .input:hover, .search .input:active, .search .input:focus{
+    background-color: #fff;
+	border: 2px solid #4f474e61;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.search .result{
+    top: 16px;
+    width: 35vw;
+    max-width: 500px;
+    min-width: 200px;
+    max-height: calc(100vh - 100px);
+    overflow: hidden scroll;
+    padding: 3px;
+    border-radius: 5px;
+    cursor: text;
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #4f474e00;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    position: relative;
+    display: none;
+    z-index: 10;
+}
+
+.search .result tr{
+    display: block;
+    cursor: pointer;
+    padding: 5px;
+}
+.search .result tr:hover{
+    background-color: #00000017;
+}
+.search .result img{
+    width: 25px;
+}
+
+header div {
+    display: inline;
+}
+#explorer header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #820282;
+}
+#viewer header {
+    background-color: #4F474E;
 }
 #explorer header span {
     top: -15px;
@@ -134,15 +209,6 @@ td{
     font-size: 20px;
     transition: all 0.5s
 }
-.wait{
-    animation: wait 3s linear infinite;
-    background-image: linear-gradient(to right, #0078D4, #005BA1);
-}
-@keyframes wait {
-    0% { width: 0%;  opacity: 1}
-    80% { width: 200%; opacity: 1}
-    100% { width: 100%; opacity: 0}
-}
 .overmouse{
 	position: initial;
 	padding: 10px;
@@ -217,7 +283,7 @@ td{
     }
 }
 .Size-Barre {
-    height: 3vmin;
+    height: 10px;
     margin-right: 11px;
     position: relative;
     transition: width 0.8s;
@@ -285,10 +351,6 @@ h1{
 	top: -10px;
 	opacity: 0;
 }
-.large_btn:hover{
-  color: #000;
-	transition: color 500ms;
-}
 .large_btn img{
   padding: 0 22px;
 	width: 50px;
@@ -316,10 +378,18 @@ h1{
     .list_btn:hover{
         color: #000;
         transition: color 500ms;
-      }
+    }
+    .large_btn:hover{
+        color: #000;
+        transition: color 500ms;
+    }
 }
 @media (prefers-color-scheme: dark) {
     .list_btn:hover{
+        color: #fff;
+        transition: color 500ms;
+    }
+    .large_btn:hover{
         color: #fff;
         transition: color 500ms;
     }
@@ -406,18 +476,6 @@ h1{
     position: relative;
     top: 45%;
     transform: translateY(-48%);
-}
-.imgheader{
-    width: 100%;
-    height: 2em;
-    padding: 20px;
-    position: absolute;
-    
-    background-image: linear-gradient(to bottom, #777, #2220);
-
-    color: #fff;
-    font-size: 20px;
-    z-index: 100;
 }
 .viewarrow{
     display: block;
@@ -515,7 +573,7 @@ h1{
     --size-mid: 6vmin;
     --size-dot: 1.5vmin;
     --size-bar: 0.5vmin;
-    --size-square: 3vmin;
+    --size-square: 10px;
     position: relative;
     width: 100%;
     display: block;
@@ -545,7 +603,7 @@ h1{
     --size-mid: 6vmin;
     --size-dot: 1.5vmin;
     --size-bar: 1vmin;
-    --size-square: 3vmin;
+    --size-square: 10px;
     position: relative;
     width: 100%;
     display: block;

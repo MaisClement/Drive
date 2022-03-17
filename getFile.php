@@ -1,7 +1,7 @@
 <?php
 
-    $PATH = '/mnt/disk_raid1/files/';
-    $IP = '//192.168.0.11/';
+    $PATH = file_get_contents('PATH.txt');
+    $IP = file_get_contents('IP.txt ');
 
 function folderSize($dir){
     $count_size = 0;
@@ -76,9 +76,9 @@ foreach ($files as $file){
             $JSON['files'][$i]['customimg'] = $IP . 'type/folder.png';
             $JSON['files'][$i]['time'] = date ("d/m/Y H:i:s", filemtime($path . $file));
             $JSON['files'][$i]['fulltime'] = filemtime($path . $file);
-                $size = folderSize($path . $file);
-            $JSON['files'][$i]['size'] = sizeFormat($size);
-            $JSON['files'][$i]['fullsize'] = $size;
+                //$size = folderSize($path . $file);
+            $JSON['files'][$i]['size'] = ''; // sizeFormat($size);
+            $JSON['files'][$i]['fullsize'] = ''; // $size;
 
         } else {
             $JSON['files'][$i]['name'] = substr($file, 0, strrpos($file, '.'));
@@ -86,7 +86,11 @@ foreach ($files as $file){
             $type = strtolower(substr($file, strrpos($file, '.') + 1));
             $JSON['files'][$i]['type'] = $type;
 
-            $JSON['files'][$i]['img'] = $IP . 'type/file.png';
+            if (is_file('type/' . $type . '.png')) {
+                $JSON['files'][$i]['img'] = $IP . 'type/' . $type . '.png';
+            } else {
+                $JSON['files'][$i]['img'] = $IP . 'type/file.png';
+            }
 
             if ($type == 'png' || $type == 'jpg' || $type == 'jpeg') {
                 $JSON['files'][$i]['customimg'] = $IP . 'getImg.php?p=' . $chem . $file;
@@ -105,7 +109,5 @@ foreach ($files as $file){
     }
     $i++;
 }
-
-//print_r($JSON);
 
 echo json_encode($JSON);

@@ -4,8 +4,8 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-    $PATH = '/mnt/disk_raid1/files/';
-    $IP = '//192.168.0.11/';
+$PATH = file_get_contents('PATH.txt');
+$IP = file_get_contents('IP.txt ');
 
 function folderSize($dir){
     $count_size = 0;

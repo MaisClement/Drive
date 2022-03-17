@@ -1,5 +1,6 @@
 <?php
-    $IP = '//192.168.0.11/';
+    $PATH = file_get_contents('PATH.txt');
+    $IP = file_get_contents('IP.txt ');
 ?>
 <!DOCTYPE html>
 <html lang="fr">

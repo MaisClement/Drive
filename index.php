@@ -1,5 +1,6 @@
 <?php
-    $IP = '//192.168.0.11/';
+    $PATH = file_get_contents('PATH.txt');
+    $IP = file_get_contents('IP.txt ');
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -14,10 +15,34 @@
 <body onkeydown="test(event)">
     <el id="explorer">
         <header>
-            <img src="<?php echo $IP ?>img/ftp.png">
-            <span>Drive</span>
-            <img src="<?php echo $IP ?>img/menu.png" style="float: right; cursor: pointer;height: 40px;padding-top: 6px;" onclick="showInfo()">
+            <div style="width: 100px;">
+                <img src="<?php echo $IP ?>img/ftp.png">
+                <span>Drive</span>
+            </div>
+
+            <div class="search" onclick="searchfocus()" onblur="hide_search()">
+                <div class="input">
+                    <img src="<?php echo $IP ?>img/search_blue.png" />
+                    <input
+                        id="searchtext"
+                        type="text" 
+                        placeholder = "Recherche"
+                        value = ""
+                        autocomplete="false"
+                        onchange = "search(this)"
+                        onkeydown = "search(this)"
+                    />
+                </div>
+                    <br>
+                <table class="result" id="result"></table>
+            </div>
+            
+            <div style="width: 120px;">
+                <img src="<?php echo $IP ?>img/menu.png" class="menu" onclick="showInfo()">
+            </div>
         </header>
+
+        
 
         <div id="uploadbck"    style="display: none;"></div>
         <div id="uploadperc"   style="display: none;"></div>
@@ -40,6 +65,12 @@
         <span id="img" style="display: none">
             <div class="small_fluent_btn" onclick="viewImg()" style="width: 100px">
                 <img class="svg" src="<?php echo $IP ?>img/directory.png"><span style="opacity: 1;">Ouvrir</span>
+            </div>
+        </span>
+
+        <span id="other" style="display: none">
+            <div class="small_fluent_btn" onclick="viewOther()" style="width: 135px">
+                <img class="svg" src="<?php echo $IP ?>img/download.png"><span style="opacity: 1;">Télécharger</span>
             </div>
         </span>
 
@@ -83,7 +114,7 @@
             <span class="Options">Espace disque </span> <br><br>
             
             <div class="Size-Barre" style="background-color: #ffffff20"></div>
-            <div class="Size-Barre" id="disk_perc_usage" style="background-color: #33A4E2; top: -3vmin; z-index:3; width: 0"></div>
+            <div class="Size-Barre" id="disk_perc_usage" style="background-color: #33A4E2; top: -10px; z-index:3; width: 0"></div>
 
             <span class="Color-Size" style="background-color: #4f474e;"></span>
             <span class="Light"> Total disponible</span> <span id="disk_size" class="val">...</span>
@@ -153,12 +184,12 @@
                 <div style="display: flex">
 
                     <div class="large_btn" onclick="CloseOverlay('overupload'); ShowOverlay('overuploadDir');">
-                        <img src="//192.168.0.11/type/folder.png"> 
+                        <img src="<?php echo $IP ?>type/folder.png"> 
                             <br>
                         Dossier
                     </div>
                     <div class="large_btn" onclick="CloseOverlay('overupload'); ShowOverlay('overuploadFile');">
-                        <img src="//192.168.0.11/type/file.png"> 
+                        <img src="<?php echo $IP ?>type/file.png"> 
                             <br>
                         Fichier
                     </div>
@@ -249,5 +280,8 @@
     </el>
 </body>
 
+    <script>
+        IP = "<?php echo $IP; ?>";
+    </script>
     <script src="<?php echo $IP ?>main.js"></script>
 </html>

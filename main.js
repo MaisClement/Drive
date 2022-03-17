@@ -6,8 +6,6 @@ IMGTOTAL = 0;
 
 ImgExt = 'png, jpg, jpeg, gif, webp';
 
-IP = '//192.168.0.11/';
-
 async function getFile(){
 	var url = IP + 'getFile.php?p=' + PATH[ipath]; 
     var el = document.getElementById('el');
@@ -51,7 +49,7 @@ async function getFile(){
                         echo = echo + '<tr class="el files image list_btn">';
                         
                     } else {
-                        echo = echo + '<tr class="el files list_btn">';
+                        echo = echo + '<tr class="el files other list_btn">';
                     }
 
                     echo = echo + '<td><img src="' + DATA['files'][file]['img'] + '" onload="imgLoad()" onerror="imgError(this)"></td>';
@@ -152,6 +150,7 @@ async function changePath(id){
         PATH[ipath] = '';
     }
     await getFile();
+    hide_search();
 }
 async function backPath(){
     if (ipath != 0){
@@ -172,6 +171,7 @@ async function select(e, data){
     var file = document.getElementById('file');
     var img = document.getElementById('img');
     var dir = document.getElementById('dir');
+    var other = document.getElementById('other');
     
     if (!file.contains(e.target)){
         if (typeof bckID !== 'undefined' && bckID) {
@@ -180,6 +180,7 @@ async function select(e, data){
             file.style.display = "none";
             dir.style.display = "none";
             img.style.display = "none";
+            other.style.display = "none";
             //bckID = '';
         }       
         var el = e.target.parentElement.className;
@@ -214,7 +215,20 @@ async function select(e, data){
                 }  
 
             } else if (el.indexOf('file') >= 0){
+                other.style.display = "initial";
                 file.style.display = "initial";
+
+                if (typeof bckID !== 'undefined') {
+                    if (bckID == id){
+                        var name = bckID.getElementsByTagName('input')[0].value;
+                        ipath++;
+                        PATH[ipath] = PATH[ipath -1] + name;
+                        if (PATH[ipath] == '/'){
+                            PATH[ipath] = '';
+                        }
+                        openOther(PATH[ipath]);
+                    }
+                }  
 
             } else {
                 dir.style.display = "initial";
@@ -228,6 +242,8 @@ async function select(e, data){
                     }
                 }  
             }
+            
+            hide_search();
 
             bckID = id;
         } else {
@@ -386,7 +402,6 @@ function input(id, type){
         echo = echo + '<div class="overmouse" id="upload' + id.files[i].name + '">' + id.files[i].name + '</div>'
     }
     list.innerHTML = echo;
-    console.log(id.files.length);
 }
 async function upload(type){
     CloseOverlay('overupload'); CloseOverlay('overuploadDir');  CloseOverlay('overuploadFile'); 
@@ -700,9 +715,8 @@ async function test(el){
                 if (bckID.className.indexOf('el') >= 0){
                     BtnShowRemoveBox();
                 }
-            }
-            if (el.keyCode == 8){ // Haut et gauche
-                await backPath();
+            } else if (el.keyCode == 81){
+                searchfocus();
             }
         }
     } else if (document.getElementById('viewer').style.display != 'none'){
@@ -792,7 +806,7 @@ async function openImg(val){
     var img = document.getElementById('img');
     img.style.display = "none";
 
-    var url = '/getFileInfo.php?s=1&p=' + val.substring(0,  val.length );
+    var url = IP + '/getFileInfo.php?s=1&p=' + val.substring(0,  val.length );
     let response = await fetch(url);	
 	if (response.status === 200) {
 		DATA = await response.json();
@@ -868,6 +882,71 @@ function exitfullscreen(){
     document.getElementById('exitfullscreen').style.display = 'none';
 }
 
+
+/* --- Other --- */
+function viewOther(){
+    var val = bckID.getElementsByTagName('input');
+    var url = IP + 'download.php?p=' + PATH[ipath] + val[0].value;
+
+    window.open(url);
+}
+function openOther(u){
+    var url = IP + 'download.php?p=' + u;
+
+    window.open(url);
+}
+
+/* --- Search --- */
+
+function searchfocus(){
+    var searchtext = document.getElementById('searchtext');
+    var result = document.getElementById('result');
+    searchtext.focus();
+
+    if (searchtext.value != '')
+        result.style.display = 'block';
+}
+async function search(id){
+    var result = document.getElementById('result');
+    result.style.display = 'block';
+
+    const alltype = ['csv', 'doc', 'docx', 'file', 'folder', 'gif', 'ico', 'jpg', 'mov', 'mp3', 'mp4', 'odt', 'pdf', 'png', 'pptx', 'xls', 'xlsx', 'zip']
+
+    var url = IP + '/search.php?q=' + id.value;
+    let response = await fetch(url);	
+	if (response.status === 200) {
+		let data = await response.json();
+
+        var echo = '';
+
+        for(var i = 0; i < data.length; i++){
+            var name = data[i].substring(data[i].lastIndexOf('/') + 1);
+            var type = data[i].substring(data[i].lastIndexOf('.') + 1);
+            var path = data[i].substring(0, data[i].lastIndexOf('/'));
+
+            if (type == 'dir'){
+                type = 'folder';
+                name = name.substring(0, name.length - 4);
+                path += '/' + name;
+            }
+
+            if (alltype.indexOf(type) == -1)
+                type = 'file';
+
+            echo += '<tr onclick="changePath(\'' + path + '\');"><td><img src="' + IP + '/type/' + type + '.png"></td><td>' + name + '</td></tr>';
+
+            if (i == 100)
+                break;
+        }
+    }
+
+    result.innerHTML = echo;
+}
+function hide_search(){
+    var result = document.getElementById('result');
+    result.style.display = 'none';
+}
+
 /* --- Ecriture de cookie --- */
 
 async function setSettingsCookie(el){
@@ -924,6 +1003,8 @@ if (href.indexOf('.') > IP.length){
     if (getCookieValue('displayInListMode') == 1){
         document.getElementById('displayInListMode').checked = true;
     }
+
+    document.getElementById('searchtext').value = '';
 
     getFile();
 }
