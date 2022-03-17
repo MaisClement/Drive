@@ -11,6 +11,7 @@ Cette version de démonstration [Drive](http://drive.hackernwar.com) est volonta
 À la racine de l'instalation, executez :
 
 ```$ git clone https://github.com/MaisClement/Drive.git drive```
+\
 ```$ cd drive```
 
 Editez les fichier `PATH.txt` et `IP.txt` pour paramétrer correctement le drive.
