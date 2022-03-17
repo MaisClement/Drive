@@ -1,25 +1,20 @@
-# Local Drive
+# Drive
 
-### See in action : [MyLines Map](https://drive.hackernwar.com)
+### Voir en action : [Drive](http://drive.hackernwar.com)
+\
+Ce projet est construit en PHP 7.4, JavaScript et CSS 3
+\
+Cette version de démonstration [Drive](http://drive.hackernwar.com) est volontairement limité. 
 
-This project build with : [Leaflet](https://leafletjs.com/).
+# Installation
 
-And it use data from : 
-> [SNCF Open Data](https://data.sncf.com/)
+À la racine de l'instalation, executez :
 
-> [Bruxelles Open Data](https://opendata.bruxelles.be)
+```$ git clone https://github.com/MaisClement/Drive.git drive```
+```$ cd drive```
 
-> [Deutsche Bahn Open Data](https://data.deutschebahn.com/)
+Editez les fichier `PATH.txt` et `IP.txt` pour paramétrer correctement le drive.
 
-> [SBB CFF FFS Open Data](https://data.sbb.ch)
-
-> [Train Empire API](https://train-empire.com/api/doc)
-
-# Just want data from the map ?
-
-Click [here](http://map.mylines.fr/geojson.json) to get the list of all stations and their gps coordinate.
-
-# Usage or contribution
-
-This project is fully free.\
-Fell free to use, re-use or contribute to this project 😄.
+PATH doit contenir le chemin absolu. Ex : `P:\\Users\\cfresse\\Documents`
+\
+IP doit contenir le chemin absolu. Ex : `//localhost/drive/`

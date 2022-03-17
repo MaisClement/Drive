@@ -15,6 +15,9 @@ function resizeImage($imagePath, $width, $height) {
     return $imagick->getImageBlob();
 }
 
+$PATH = file_get_contents('PATH.txt');
+$IP = file_get_contents('IP.txt');
+
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
     // Windows
     echo file_get_contents('type/jpg.png');
@@ -24,9 +27,9 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
     if (isset($_GET['p']) && $_GET['p'] != '') {
         $name = substr($_GET['p'], strrpos($_GET['p'], '/'));
     
-        $img = resizeImage('/mnt/disk_raid1/files/' . $_GET['p'], 50, 50);
+        $img = resizeImage($PATH . $_GET['p'], 50, 50);
         echo $img;
-        file_put_contents('/mnt/disk_raid1/cache/' . $name, $img);
+        file_put_contents($PATH . $name, $img);
     }
 
 }

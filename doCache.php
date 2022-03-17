@@ -57,14 +57,15 @@ function eachFile($folder, $total, $nbfiles){
     return $total;
 }
 
+$PATH = file_get_contents('PATH.txt');
+$IP = file_get_contents('IP.txt');
 
 
-
-$nbfiles = getAllDir('/mnt/disk_raid1/files/');
+$nbfiles = getAllDir($PATH);
 
 echo '=== Génération du cache en cours ===';
 
-eachFile('/mnt/disk_raid1/files/', 0, $nbfiles);
+eachFile($PATH, 0, $nbfiles);
 
 
 

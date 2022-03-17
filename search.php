@@ -33,7 +33,7 @@ $files = array_diff(scandir($dir), array('.','..'));
 } 
 
 $PATH = file_get_contents('PATH.txt');
-$IP = file_get_contents('IP.txt ');
+$IP = file_get_contents('IP.txt');
 
 $query = $_GET['q'];
 

@@ -4,7 +4,8 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-    $PATH = '/mnt/disk_raid1/files/';
+    $PATH = file_get_contents('PATH.txt');
+    $IP = file_get_contents('IP.txt');
 
 function delTree($dir) {
     $files = array_diff(scandir($dir), array('.','..'));

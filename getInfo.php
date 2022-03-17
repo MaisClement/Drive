@@ -5,7 +5,7 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
     $PATH = file_get_contents('PATH.txt');
-    $IP = file_get_contents('IP.txt ');
+    $IP = file_get_contents('IP.txt');
 
 function folderSize($dir){
     $count_size = 0;
@@ -50,7 +50,7 @@ function sizeFormat($bytes){
 }
 
 $PATH = file_get_contents('PATH.txt');
-$IP = file_get_contents('IP.txt ');
+$IP = file_get_contents('IP.txt');
 
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
     // Windows
