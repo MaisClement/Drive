@@ -4,19 +4,21 @@
 \
 Ce projet est construit en PHP 7.4, JavaScript et CSS 3
 \
-Cette version de démonstration [Drive](http://drive.hackernwar.com) est volontairement limité. 
+Version de démonstration : [Drive](http://drive.hackernwar.com) (volontairement restreint)
 
 # Prérequis
 
 Il est nécésaire d'avoir :
 - Un serveur web (apache, nginx,...)
 - PHP >= 7.4
+- Imagick
 
-Pour permettre l'utilisation optimale, les données ``php.ini`` 
+
+Pour installer Imagick :
 \
-``upload_max_filesize = 10M``
+Linux       ```$ sudo apt install php-imagick```
 \
-``post_max_size = 10M``
+Windows     [Install Imagick for PHP ](https://www.geeksforgeeks.org/how-to-install-imagick-for-php-in-windows/)
 
 # Installation
 
@@ -26,8 +28,12 @@ Pour permettre l'utilisation optimale, les données ``php.ini``
 \
 ```$ cd drive```
 
-Editez les fichier `PATH.txt` et `IP.txt` pour paramétrer correctement le drive.
+Editez les fichier `PATH.txt` et `HOST.txt` pour paramétrer correctement le drive.
 
-PATH doit contenir le chemin absolu. Ex : `P:\\Users\\cfresse\\Documents`
+PATH doit contenir le chemin absolu. 
 \
-IP doit contenir le chemin absolu. Ex : `//localhost/drive/`
+Ex : `P:\\Users\\cfresse\\Documents`
+
+HOST doit contenir le chemin absolu. 
+\
+Ex : `//localhost/drive/`
