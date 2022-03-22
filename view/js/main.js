@@ -409,6 +409,7 @@ async function remove_el(){
                 alert(data);
             }
             await get_file();
+            btnhide_remove_el();
 
         } else {
             var el = document.getElementsByClassName('el');
