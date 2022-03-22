@@ -57,7 +57,7 @@ async function get_file(){
                         echo = echo + '<tr class="el files other list_btn">';
                     }
 
-                    echo = echo + '<td><img src="' + DATA['files'][file]['img'] + '" onload="imgLoad()" onerror="imgError(this)"></td>';
+                    echo = echo + '<td><img src="' + DATA['files'][file]['img'] + '" onload="file_ico_load()" onerror="file_ico_catch_load(this)"></td>';
                         IMGTOTAL++;
 
                     if ((DATA['files'][file]['img'] == 'view/type/file.png' || get_cookie_value('displayExtension') == 1) && DATA['files'][file]['type'] != 'dir'){
@@ -89,7 +89,7 @@ async function get_file(){
                     } else {
                         echo = echo + '<div class="el files large_btn">';
                     }
-                    echo = echo + ' <img src="' + DATA['files'][file]['customimg'] + '" onload="imgLoad()" onerror="imgError(this)">';
+                    echo = echo + ' <img src="' + DATA['files'][file]['customimg'] + '" onload="file_ico_load()" onerror="file_ico_catch_load(this)">';
                         IMGTOTAL++;
                     echo = echo + ' <br>';
                     if ((DATA['files'][file]['img'] == 'view/type/file.png' || get_cookie_value('displayExtension') == 1) && DATA['files'][file]['type'] != 'dir'){
@@ -245,7 +245,7 @@ async function select(e, data){
                         if (PATH[ipath] == '/'){
                             PATH[ipath] = '';
                         }
-                        await openImg(PATH[ipath]);
+                        await open_viewer(PATH[ipath]);
                     }
                 }  
 
@@ -285,6 +285,26 @@ async function select(e, data){
             bckID = '';
         }
     }
+}
+
+function file_ico_load(){
+    var loaderimg = document.getElementById('loaderimg');
+    var loader = document.getElementById('loader');
+    IMGLOAD++;
+    loader.style.display = 'none';
+    if (IMGLOAD >= IMGTOTAL){
+        loaderimg.style.width = '100%';
+        loaderimg.style.opacity = '0';
+        IMGLOAD = 0; IMGTOTAL = 0;
+
+    } else {
+        var perc = (IMGLOAD / IMGTOTAL) * 100
+        loaderimg.style.opacity = '1';
+        loaderimg.style.width = perc + '%';
+    }
+}
+function file_ico_catch_load(id){
+    id.src = IP + '/view/type/error.png';
 }
 
 // --- New Folder ---
@@ -486,7 +506,7 @@ if (href.indexOf('.') > IP.length){
     
     if (i = ext.indexOf(img_extension)){
         PATH[ipath] = href;
-        openImg(href);
+        open_viewer(href);
     }
 } else {
 

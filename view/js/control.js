@@ -79,13 +79,13 @@ async function control(el){
         }
     } else if (document.getElementById('viewer').style.display != 'none'){
         if (typeof IMGPERC !== 'undefined' && el.keyCode == 37){
-            await viewerbck();
+            await viewer_go_back();
 
         } else if (typeof IMGSUIV !== 'undefined' && el.keyCode == 39){
-            await viewerfor();
+            await viewer_go_forward();
 
         } else if (el.keyCode == 27){
-            exitviewer();
+            exit_viewer();
         }
     }
 }

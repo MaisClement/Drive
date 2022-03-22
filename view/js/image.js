@@ -1,25 +1,12 @@
 /* --- Image --- */
 
-function imgLoad(){
-    var loaderimg = document.getElementById('loaderimg');
-    var loader = document.getElementById('loader');
-    IMGLOAD++;
-    loader.style.display = 'none';
-    if (IMGLOAD >= IMGTOTAL){
-        loaderimg.style.width = '100%';
-        loaderimg.style.opacity = '0';
-        IMGLOAD = 0; IMGTOTAL = 0;
-
-    } else {
-        var perc = (IMGLOAD / IMGTOTAL) * 100
-        loaderimg.style.opacity = '1';
-        loaderimg.style.width = perc + '%';
-    }
+function btn_open_viewer(){
+    const val = bckID.getElementsByTagName('input');
+    const name = val[0].value;
+    open_viewer(PATH[ipath] + name);
 }
-function imgError(id){
-    id.src = IP + '/view/type/error.png';
-}
-async function openImg(val){
+async function open_viewer(val){
+    console.log(val)
     document.getElementById('explorer').style.display = 'none';
     document.getElementById('viewer').style.display = 'block';
 
@@ -66,29 +53,31 @@ async function openImg(val){
     window.history.pushState(ipath, 'Drive', IP + val);
     window.document.title = name +' - Drive';
 }
-async function viewerbck(){
-    await openImg(PATH[ipath].substring(0,  PATH[ipath].lastIndexOf('/') + 1 ) + IMGPERC);
+async function viewer_go_back(){
+    await open_viewer(PATH[ipath].substring(0,  PATH[ipath].lastIndexOf('/') + 1 ) + IMGPERC);
 }
-async function viewerfor(){
-    await openImg(PATH[ipath].substring(0,  PATH[ipath].lastIndexOf('/') + 1 ) + IMGSUIV);
+async function viewer_go_forward(){
+    await open_viewer(PATH[ipath].substring(0,  PATH[ipath].lastIndexOf('/') + 1 ) + IMGSUIV);
 }
 function stopImgLoader(){
     document.getElementById('imgloader').style.display = 'none';
 
-    ARROWTIMEOUT = setTimeout('hidearrow()', 3000);
+    ARROWTIMEOUT = setTimeout(hide_arrow, 3000);
 }
-function viewtest(){
+function show_arrow(){
     document.getElementById('viewerbck').style.opacity = '1';
     document.getElementById('viewerfor').style.opacity = '1';
 
-    clearTimeout(ARROWTIMEOUT);
-    ARROWTIMEOUT = setTimeout('hidearrow()', 3000);
+    if (typeof ARROWTIMEOUT !== 'undefined')
+        clearTimeout(ARROWTIMEOUT);
+    
+    ARROWTIMEOUT = setTimeout(hide_arrow, 3000);
 }
-function hidearrow(){
+function hide_arrow(){
     document.getElementById('viewerbck').style.opacity = '0';
     document.getElementById('viewerfor').style.opacity = '0';
 }
-async function exitviewer (){
+async function exit_viewer (){
     document.getElementById('explorer').style.display = 'block';
     document.getElementById('viewer').style.display = 'none';
 
@@ -96,18 +85,4 @@ async function exitviewer (){
 
     var path = PATH[ipath].substring(0,  PATH[ipath].lastIndexOf('/') );
     await change_path(path);
-}
-function fullscreen(){
-    var el = document.getElementById('viewer');
-    if (el.requestFullscreen) {
-        el.requestFullscreen();
-    }
-
-    document.getElementById('fullscreen').style.display = 'none';
-    document.getElementById('exitfullscreen').style.display = 'block';
-}
-function exitfullscreen(){
-    document.exitFullscreen();
-    document.getElementById('fullscreen').style.display = 'block';
-    document.getElementById('exitfullscreen').style.display = 'none';
 }
