@@ -14,8 +14,10 @@
     $PATH = file_get_contents('./config/PATH.txt');
     $HOST = file_get_contents('./config/HOST.txt');
 
-    if (isset($_GET['ctrl']) && is_file('./controller/' . $_GET['ctrl'] . '.php')){
-        include_once ('./controller/' . $_GET['ctrl'] . '.php');
+    require_once('./base/main.php');
+
+    if (isset($_GET['ctrl']) && is_file('./model/' . $_GET['ctrl'] . '.php')){
+        include_once ('./model/' . $_GET['ctrl'] . '.php');
     
     } else {
         require_once('./view/index.html');

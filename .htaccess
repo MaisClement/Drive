@@ -1,6 +1,11 @@
-
 # Disable directory browsing 
 Options -Indexes
+
+# Deny access to .htaccess
+<Files "^\.">
+    Order allow,deny
+    Deny from all
+</Files>
 
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
@@ -17,3 +22,6 @@ Options -Indexes
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+#Technique de schlag
+ErrorDocument 404 /index.php
