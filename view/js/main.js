@@ -150,7 +150,6 @@ function update_path(){
         path.appendChild(domel); 
 
     let i = 0;
-    let patharr = [];
 
     while (temppath.indexOf(search) >= 0) {
         folder = temppath.substring(0, temppath.indexOf(search));
@@ -356,7 +355,12 @@ async function rename_el(path, oldname, newname){
         if (data == 'OK'){
             await get_file();
         } else {
-            alert(data);
+            if (alert.indexOf('Permission denied') >= 0){
+                show_overlay('overperm');
+            } else {
+                alert(data);
+            }
+            
         }
     }
 }

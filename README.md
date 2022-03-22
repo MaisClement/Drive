@@ -11,14 +11,6 @@ Version de démonstration : [Drive](http://drive.hackernwar.com) (volontairement
 Il est nécésaire d'avoir :
 - Un serveur web (apache, nginx,...)
 - PHP >= 7.4
-- Imagick
-
-
-Pour installer Imagick :
-\
-Linux       ```$ sudo apt install php-imagick```
-\
-Windows     [Install Imagick for PHP ](https://www.geeksforgeeks.org/how-to-install-imagick-for-php-in-windows/)
 
 # Installation
 

@@ -93,7 +93,17 @@
 
     <div id="el" onclick="select(event)" ondrop="DropFile(event);" ondragover="onDragOverFile(event);" ondragleave="onDragLeaveFile()"></div>
 
-
+    <div class="over-back" id="overperm" style="display: none;">
+        <div class="over-box" style="max-width: 330px;max-height: 250px;">
+            <h1>Permission insuffisante</h1>
+            Vous n'êtes pas autorisé à modifier ou supprimer l'élément.
+            <div style="position: absolute;width: 90%;bottom: 25px;">
+                <div class="small_fluent_btn" onclick="close_overlay('overperm')" style="width: 120px;display: inline-block;">
+                    <img class="svg" src="<?php echo $HOST ?>view/img/cancel.png" class="svg"><span style="opacity: 1;">Annuler</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="over-back" id="overrm" style="display: none;">
         <div class="over-box">

@@ -105,7 +105,7 @@ foreach ($files as $file){
             }
 
             if ($type == 'png' || $type == 'jpg' || $type == 'jpeg') {
-                $JSON['files'][$i]['customimg'] = $HOST . '?ctrl=get_img&?p=' . $chem . $file;
+                $JSON['files'][$i]['customimg'] = $HOST . '?ctrl=get_img&p=' . $chem . $file;
             } else if (is_file('view/type/' . $type . '.png')) {
                 $JSON['files'][$i]['customimg'] = $HOST . 'view/type/' . $type . '.png';
             } else {
