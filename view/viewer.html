@@ -1,0 +1,21 @@
+<section id="viewer" onmousemove="viewtest(event)" style="display: none">
+    <header>
+        <img src="<?php echo $HOST ?>view/img/delete.png" style="float: right; cursor: pointer;height: 40px;padding-top: 6px;" onclick="exitviewer()">
+        <span id="imgname"></span>
+            <br>
+        <span id="imghname" style="font-size: 15px;top: 5px;"></span>
+        
+    </header>
+
+    <i id="imgloader" class="loader-4" style="z-index: 2;"></i>
+
+    <div class="imgReader" id="imgReader">
+        <img id="viewimg" class="img" onload="stopImgLoader()">
+        <span id="viewerbck" class="viewarrow"  onclick="viewerbck()">
+            <img src="<?php echo $HOST ?>/view/img/back.png">
+        </span>
+        <span id="viewerfor" class="viewarrow" onclick="viewerfor()" style="right: 0px;"> 
+            <img src="<?php echo $HOST ?>/view/img/forward.png">
+        </span>
+    </div>
+</section>

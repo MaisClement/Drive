@@ -1,0 +1,27 @@
+<div class="over-back" id="infos" onclick="hide_info()"></div>
+<div class="info-box" id="det">            
+    <span onclick="hide_info()" style="text-align: right;cursor: pointer;display: block;"><span style="font-size: 20px;" onclick="hide_info()">×</span> Fermer</span>
+    <span class="Options">Espace disque </span> <br><br>
+    
+    <div class="Size-Barre" style="background-color: #ffffff20"></div>
+    <div class="Size-Barre" id="disk_perc_usage" style="background-color: #33A4E2; top: -10px; z-index:3; width: 0"></div>
+
+    <span class="Color-Size" style="background-color: #4f474e;"></span>
+    <br> <span class="Light"> Total disponible</span> <span id="disk_size" class="val">...</span>
+    <br> <span class="Light"> Utilisé </span> <span id="disk_usage" class="val">...</span>
+    <br> <span class="Light"> Soit </span> <span id="disk%" class="val">...</span>
+
+    <br><br>  <hr> 
+    <span class="Options">Paramètres</span> <br> 
+    <br> <span class="Light"> Afficher les extensions </span> 
+        <label class="toggle-control"> <input type="checkbox" id="displayExtension" onclick="set_cookie_value(this)"> <span class="control"></span> </label>
+
+    <br> <span class="Light"> Affichage Liste </span> 
+        <label class="toggle-control"> <input type="checkbox" id="displayInListMode" onclick="set_cookie_value(this)"> <span class="control"></span> </label>
+
+    <br><br>  <hr> 
+    <span class="Options">À propos</span> <br> 
+    <br> <a href="https://github.com/MaisClement/Drive" target="_blank" class="linkblue"> Code source </span> 
+    <br> <a href="https://icones8.fr/" target="_blank" class="linkblue"> Icones par Icones8 </span> 
+
+</div>

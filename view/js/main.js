@@ -4,10 +4,10 @@ PATH[ipath] = '';
 IMGLOAD = 0;
 IMGTOTAL = 0;
 
-ImgExt = 'png, jpg, jpeg, gif, webp';
+const img_extension = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
 
-async function getFile(){
-	var url = IP + 'getFile.php?p=' + PATH[ipath]; 
+async function get_file(){
+	var url = IP + '?ctrl=get_file&p=' + PATH[ipath]; 
     var el = document.getElementById('el');
     var loader = document.getElementById('loader');
     var loaderimg = document.getElementById('loaderimg');
@@ -33,15 +33,20 @@ async function getFile(){
 
         PATH[ipath] = DATA['path'];
 
-        if (DATA['files'] == '[]'){
-            echo = '<div style="text-align: center">Aucun élément</div>'
+        console.log(DATA['files']);
+
+        if (DATA['files'] === []){
+            let domel = document.createElement("div")
+            .innerHTML = 'Aucun élément'
+            .style.textAlign = 'center'
+            .appendChild(domel); 
 
         } else {
-            if (getCookieValue('displayInListMode') == 1)
+            if (get_cookie_value('displayInListMode') == 1)
                 echo = echo + '<table><tr><td style="width: 50px;"></td><td><b>Nom</b></td><td><b>Dernière modification</b></td><td><b>Poids</b></td><tr>';
 
             for(file in DATA['files'] ){
-                if (getCookieValue('displayInListMode') == 1){
+                if (get_cookie_value('displayInListMode') == 1){
                     if (DATA['files'][file]['type'] == 'dir'){
                         echo = echo + '<tr class="el dir list_btn">';
 
@@ -55,7 +60,7 @@ async function getFile(){
                     echo = echo + '<td><img src="' + DATA['files'][file]['img'] + '" onload="imgLoad()" onerror="imgError(this)"></td>';
                         IMGTOTAL++;
 
-                    if ((DATA['files'][file]['img'] == 'type/file.png' || getCookieValue('displayExtension') == 1) && DATA['files'][file]['type'] != 'dir'){
+                    if ((DATA['files'][file]['img'] == 'view/type/file.png' || get_cookie_value('displayExtension') == 1) && DATA['files'][file]['type'] != 'dir'){
                         echo = echo + '<td>' + DATA['files'][file]['name'] + '.' + DATA['files'][file]['type'] + '</td>';
                     } else {
                         echo = echo + '<td>' + DATA['files'][file]['name'] + '</td>';
@@ -87,7 +92,7 @@ async function getFile(){
                     echo = echo + ' <img src="' + DATA['files'][file]['customimg'] + '" onload="imgLoad()" onerror="imgError(this)">';
                         IMGTOTAL++;
                     echo = echo + ' <br>';
-                    if ((DATA['files'][file]['img'] == 'type/file.png' || getCookieValue('displayExtension') == 1) && DATA['files'][file]['type'] != 'dir'){
+                    if ((DATA['files'][file]['img'] == 'view/type/file.png' || get_cookie_value('displayExtension') == 1) && DATA['files'][file]['type'] != 'dir'){
                         echo = echo + DATA['files'][file]['name'] + '.' + DATA['files'][file]['type'];    
                     } else {
                         echo = echo + DATA['files'][file]['name'];
@@ -112,60 +117,86 @@ async function getFile(){
                 loader.style.display = 'none';
             }
 
-            if (getCookieValue('displayInListMode') == 1)
+            if (get_cookie_value('displayInListMode') == 1)
                 echo = echo + '</table>';          
         }
         el.innerHTML = echo;
-        updatePath();
+        update_path();
 	} else {
+        let el = document.createElement("div");
         el.innerHTML = 'Une erreur s\'est produite';
+        el.style.textAlign = 'center';
+        el.appendChild(el); 
     }
 }
-function updatePath(){
-    var temppath = PATH[ipath]
-    temppath.replace('//', '/');
-    var search = '/';
-    var path = document.getElementById('path');
-    var echo = '<a class="path-link" onclick="changePath(\'\')">Accueil</a>';
-    var chem = '';
-    var folder = 'Accueil';
+function update_path(){
+    let temppath = PATH[ipath].replace('//', '/');
+
+    const search = '/';
+    const path = document.getElementById('path');
+
+    path.innerHTML = '';
+
+    let chem = '';
+    let folder = 'Accueil';
+
+    let domel = document.createElement("a");
+        domel.innerHTML = 'Accueil';
+        domel.style.textAlign = 'center';
+        domel.className = 'path-link';
+        domel.onclick = function () {
+            change_path('');
+        };
+        path.appendChild(domel); 
+
+    let i = 0;
+    let patharr = [];
 
     while (temppath.indexOf(search) >= 0) {
         folder = temppath.substring(0, temppath.indexOf(search));
         chem += folder + '/';
 
-        echo = echo + ' > <a class="path-link" onclick="changePath(\'' + chem.substring(0, chem.length -1) + '\')">' + folder + '</a>' ;
+            domel = document.createElement("a");
+            domel.innerHTML = ' > ';
+            path.appendChild(domel);
+
+            domel = document.createElement("a");
+            domel.innerHTML = folder;
+            domel.style.textAlign = 'center';
+            domel.className = 'path-link';
+            domel.click = (function(){
+                change_path(chem.substring(0, chem.length -1));
+            });
+            path.appendChild(domel);
 
         temppath = temppath.substring(temppath.indexOf(search) + 1, temppath.length);
     }
-    path.innerHTML = echo;
-
     window.history.pushState(ipath, 'Drive', IP + PATH[ipath]);
     window.document.title = folder +' - Drive';
 }
-async function changePath(id){
+async function change_path(id){
     ipath++;
     PATH[ipath] = id + '/';
     if (PATH[ipath] == '/'){
         PATH[ipath] = '';
     }
-    await getFile();
+    await get_file();
     hide_search();
 }
-async function backPath(){
+async function back_path(){
     if (ipath != 0){
         ipath--;
-        await getFile();
+        await get_file();
     }
 }
-async function BtnOpenFolder(){
+async function open_folder(){
     id = bckID.getElementsByTagName('input')[0].value;
     ipath++;
     PATH[ipath] = PATH[ipath -1] + id + '/';
     if (PATH[ipath] == '/'){
         PATH[ipath] = '';
     }
-    await getFile();
+    await get_file();
 }
 async function select(e, data){
     var file = document.getElementById('file');
@@ -222,11 +253,11 @@ async function select(e, data){
                     if (bckID == id){
                         var name = bckID.getElementsByTagName('input')[0].value;
                         ipath++;
-                        PATH[ipath] = PATH[ipath -1] + name;
+                        PATH[ipath] = PATH[ipath -1];
                         if (PATH[ipath] == '/'){
                             PATH[ipath] = '';
                         }
-                        openOther(PATH[ipath]);
+                        open_other(PATH[ipath] + name);
                     }
                 }  
 
@@ -238,7 +269,7 @@ async function select(e, data){
                         var val = bckID.getElementsByTagName('input');
                         ipath++;
                         PATH[ipath] = PATH[ipath - 1] + val[0].value + '/';
-                        await getFile();
+                        await get_file();
                     }
                 }  
             }
@@ -252,9 +283,10 @@ async function select(e, data){
     }
 }
 
-/* --- Remove --- */
+// --- Remove ---
+// 🟢
 
-function BtnShowRemoveBox(){
+function btn_remove_el(){
     var val = bckID.getElementsByTagName('input');
     var over = document.getElementById('overrm');
     var rmname = document.getElementById('rmname');
@@ -270,11 +302,16 @@ function BtnShowRemoveBox(){
     rmsize.innerHTML = val[5].value;
     ELNAME = val[0].value;
 }
-async function BtnRemoveElement(){
+function btnhide_remove_el(){
+    var over = document.getElementById('overrm');
+    over.style.display = 'none';
+    delete ACTION;
+}
+async function remove_el(){
     var old = bckID;
     delete bckID;
 
-    var url = IP + 'removeEl.php?p=' + PATH[ipath] + ELNAME; 
+    var url = IP + '?ctrl=remove&p=' + PATH[ipath] + ELNAME; 
     delete ACTION;
 
 	let response = await fetch(url);	
@@ -283,108 +320,91 @@ async function BtnRemoveElement(){
 
         if (data != 'OK'){
             alert(data);
-            await getFile();
-        }
-    }
-    
-    var el = document.getElementsByClassName('el');
-    for (var i = 0; i < el.length; i++) {
-        if (el[i] == old){
-            if (el[i + 1]){
-                bckID = el[i + 1];
-                bckID.style.border = "#33A4E2 2px solid";
-                bckID.style.backgroundColor = "#33A4E21F";
-                break;
-            } else if (el[i - 1]){
-                bckID = el[i - 1];
-                bckID.style.border = "#33A4E2 2px solid";
-                bckID.style.backgroundColor = "#33A4E21F";
-                break;
+            await get_file();
+
+        } else {
+            var el = document.getElementsByClassName('el');
+            for (var i = 0; i < el.length; i++) {
+                if (el[i] == old){
+                    if (el[i + 1])
+                        bckID = el[i + 1];
+                        
+                    else if (el[i - 1])
+                        bckID = el[i - 1];
+                        
+                    bckID.style.border = "#33A4E2 2px solid";
+                    bckID.style.backgroundColor = "#33A4E21F";
+                    break;
+                }
             }
+        
+            old.remove();
+            btnhide_remove_el();
         }
     }
-
-    old.outerHTML = '';
-    BtnHideRemoveBox();
-
-}
-function BtnHideRemoveBox(){
-    var over = document.getElementById('overrm');
-    over.style.display = 'none';
-    delete ACTION;
 }
 
-/* --- Rename --- */
+// --- Rename ---
+// 🟢
 
-function BtnShowRenameBox(){
+function btn_rename_el(){
     var val = bckID.getElementsByTagName('input');
-    ELNAME = val[0].value;
     
-    let newname = prompt("Renommer le fichier", "");
+    let newname = prompt("Renommer le fichier", val[0].value);
 
-    if (newname == null || newname == "") {
-        newname = "User cancelled the prompt.";
-    } else {
-        BtnRenameElement(newname);
+    if (newname != null || newname != 'null' || newname != "") {
+        rename_el(PATH[ipath], val[0].value, newname);
     } 
 }
-async function BtnRenameElement(newname){
-    var url = IP + 'renameEl.php?p=' + PATH[ipath] + ELNAME + '&n=' + PATH[ipath] + newname ; 
+async function rename_el(path, oldname, newname){
+    var url = IP + '?ctrl=rename&p=' + path + oldname + '&n=' + path + newname ; 
 
 	let response = await fetch(url);	
 	if (response.status === 200) {
 		let data = await response.text();
 
         if (data == 'OK'){
-            await getFile();
+            await get_file();
         } else {
             alert(data);
         }
     }
 }
 
-/* --- New Folder --- */
+// --- New Folder ---
+// 🟢
 
-function BtnShowNewFoldBox(){
-    var over = document.getElementById('overnewfold');
-    var input = document.getElementById('newfold');
+function btn_new_folder(){    
+    let name = prompt("Nouveau dossier", "");
 
-    over.style.display = 'block'
-    input.focus();
+    if (name != null || name != "") {
+        new_folder(PATH[ipath], name);
+    } 
 }
-async function BtnNewFoldElement(id){
-    var input = document.getElementById('newfold');
-    var url = IP + 'mkdir.php?p=' + PATH[ipath] + '&n=' + input.value ; 
-
-    var bckinner = id.innerHTML;
-    id.innerHTML = '<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50" xml:Hr="preserve"> <path fill="#fff" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z"> <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.8s" repeatCount="indefinite" /></path> </svg>';
+async function new_folder(path, name){
+    var url = IP + '?ctrl=mkdir&p=' + path + '&n=' + name ; 
 
 	let response = await fetch(url);	
 	if (response.status === 200) {
 		let data = await response.text();
 
         if (data == 'OK'){
-            await getFile();
-            BtnHideNewFoldBox();
-            id.innerHTML = bckinner;
-            newname.value = '';
+            await get_file();
+
         } else {
             alert(data);
+
         }
     }
-}
-function BtnHideNewFoldBox(){
-    var over = document.getElementById('overnewfold');
-    over.style.display = 'none';
 }
 
 /* --- Upload --- */
 
-function ShowOverlay(id){
+function show_overlay(id){
     var el = document.getElementById(id);
     el.style.display = 'block';
 }
-function CloseOverlay(id){
+function close_overlay(id){
     var el = document.getElementById(id);
     el.style.display = 'none';
 }
@@ -392,26 +412,28 @@ function BtnShowUploadBox(){
     var over = document.getElementById('overupload');
     over.style.display = 'block';
 }
-function input(id, type){
+function upload_input(id, type){
     var list = document.getElementById('uploadList' + type);
-    var echo = '';
 
     list.innerHTML = 'Préparation...';
 
     for (var i = 0; i < id.files.length; i++){        
-        echo = echo + '<div class="overmouse" id="upload' + id.files[i].name + '">' + id.files[i].name + '</div>'
+        let files = document.createElement("div");
+        files.innerHTML = id.files[i].name;
+        files.id = 'upload' + id.files[i].name;
+        files.className = 'overmouse';
+        list.appendChild(files); 
     }
-    list.innerHTML = echo;
 }
-async function upload(type){
-    CloseOverlay('overupload'); CloseOverlay('overuploadDir');  CloseOverlay('overuploadFile'); 
+async function upload_prepare(type){
+    close_overlay('overupload'); close_overlay('overuploadDir');  close_overlay('overuploadFile'); 
     var id = document.getElementById('fileupload' + type);
     var bck = document.getElementById('uploadbck');
     var perc = document.getElementById('uploadperc');
     var status = document.getElementById('uploadstatus');
     var info = document.getElementById('uploadinfo');
 
-    info.innerHTML = '<i> Préparation... </i>';
+    info.innerHTML = 'Préparation...';
 
     id.style.display = 'none';
     bck.style.display = 'block';
@@ -431,60 +453,7 @@ async function upload(type){
 
     var y = 0;
     for (var i = 0; i < id.files.length; i++){ 
-/*
-        
-        if (type == 'dir'){
-            json[i] = path + id.files[i].webkitRelativePath;
 
-        } else {
-            json[i] = path + id.files[i].name; 
-            
-        }   
-    }
-
-        json = JSON.stringify(json);
-
-        let formData = new FormData();
-        formData.append('p', json);
-
-        url = IP + 'getFileInfo.php?p=' + PATH[ipath] + id.files[i].name; 
-
-        let response = await fetch('_account2', {
-                                            method: 'post',
-                                            body: formData
-                                            });	
-        if (response.status === 200) {
-            let data = await response.json();
-                
-            if(data == 'OK'){
-
-        //---------------------
- 
-        url = IP + 'getFileInfo.php?p=' + PATH[ipath] + id.files[i].name; 
-
-        let response = await fetch(url);		
-        if (response.status === 200) {
-            var data = await response.json();
-
-            if (typeof data['error'] !== 'undefined'){
-                if ( data['error'] == 'No file'){
-                    FILES[y] = [];    
-                    FILES[y]['name'] = id.files[i].name
-                    FILES[y]['path'] = path;
-                    FILES[y]['file'] = id.files[i];
-                    FILES[y]['size'] = id.files[i].size;
-                    TOTALSIZE += id.files[i].size;
-                    console.log('no file');
-                    y++;
-                }
-            } else if (data['fullsize'] == id.files[i].size && data['size'] == id.files[i].lastModified) {
-                console.log('fichier ignoré')
-            } else {
-                console.log('qqhc')
-            }
-
-
-        }*/
         FILES[y] = [];    
         FILES[y]['name'] = id.files[i].name
         if (type == 'dir'){
@@ -498,10 +467,11 @@ async function upload(type){
         y++;
     }
     perc.className = '';
-    alternate();
-    doFile();
+    INTERVAL = setInterval(alternate, 3000);
+    exe_upload();
+
 }
-async function doFile(){
+async function exe_upload(){
     var avv = document.getElementById('uploadperc');
     var timer = document.getElementById('timer');
     var perc = document.getElementById('perc');
@@ -521,9 +491,9 @@ async function doFile(){
         if (remain == 5 || remain == 0)
             remain = 'Quelques secondes...';
         else if (remain >= 3600)
-            remain = Math.floor(remain / 3600) + ' Heures ' + Math.floor((remain % 3600)  / 60) + ' minutes restantes';
+            remain = Math.floor(remain / 3600) + ' heures ' + Math.floor((remain % 3600)  / 60) + ' minutes restantes';
         else if (remain >= 60)
-            remain =  Math.floor(remain / 60) + ' Minutes ' + Math.floor(remain % 60) + ' secondes restantes';
+            remain =  Math.floor(remain / 60) + ' minutes ' + Math.floor(remain % 60) + ' secondes restantes';
         else
             remain = remain + ' secondes restantes'
 
@@ -534,34 +504,26 @@ async function doFile(){
     } else {
         if (FILESERROR.length == 0){
             avv.style.backgroundColor = '#189A2E';
-            avv.style.width = '100%';
-            info.innerHTML = 'Terminé ! <i> Sans erreur </i>';
-            timer.innerHTML = '';
-            perc.innerHTML = '';
-            timer.style.display = 'none';
-            perc.style.display = 'none';
-            id.style.display = 'block';
-            window.document.title = '100 % | Terminé ! - Drive';
+            info.innerHTML = 'Terminé ! - Sans erreur';
 
-            setTimeout('document.getElementById("uploadperc").style.backgroundColor = "#820282";', 4500);
-            setTimeout('hideUploadStatus()', 5000);
-            setTimeout('window.document.title = "Drive"', 5000);
         } else {
             avv.style.backgroundColor = '#C61515';
-            avv.style.width = '100%';
-            info.innerHTML = 'Terminé ! <i> Avec ' + (FILESERROR.length) + ' erreur(s) </i>';
-            timer.innerHTML = '';
-            perc.innerHTML = '';
-            timer.style.display = 'none';
-            perc.style.display = 'none';
-            id.style.display = 'block';
-            
-            
-            setTimeout('document.getElementById("uploadperc").style.backgroundColor = "#820282";', 9500);
-            setTimeout('hideUploadStatus()', 10000);
+            info.innerHTML = 'Terminé ! - Avec ' + (FILESERROR.length) + ' erreur(s)';
+
         }
 
-        await getFile();
+        avv.style.width = '100%';
+        timer.innerHTML = '';
+        perc.innerHTML = '';
+        timer.style.display = 'none';
+        perc.style.display = 'none';
+        id.style.display = 'block';
+        window.document.title = '100 % | Terminé ! - Drive';
+
+        setTimeout(hide_upload_status, 5000);
+        clearInterval(INTERVAL);
+
+        await get_file();
     }
 }
 async function sendFile(file, name, path, size){    
@@ -577,45 +539,55 @@ async function sendFile(file, name, path, size){
     if (filel){
         filel.className = 'overmouse uploadtransfert';
     }
-    info.innerHTML = 'Envoi de <i>' + name + '</i>...';
+    info.innerHTML = 'Envoi de ' + name + '...';
 
     let formData = new FormData();
     formData.append('n', name);
     formData.append('p', path);
     formData.append('file', file);
 
-    url = IP + 'upload.php'; 
+    url = IP + '?ctrl=upload'; 
 
     let response = await fetch(url, {
-                                    method: 'post',
-                                    body: formData
+                                        method: 'post',
+                                        body: formData
                                     });		
     if (response.status === 200) {
         var data = await response.text();
 
         if(data == 'OK'){
-            document.getElementById('upload' + name).outerHTML = '';            
+            document.getElementById('upload' + name).remove();            
             FILES.shift();
-            doFile();
+            exe_upload();
+
         } else {
             bck.style.backgroundColor = '#C61515';
             avv.style.backgroundColor = '#930F0F';
-            info.innerHTML = 'Echec de l\'envoi du fichier <i>' + name + '</i>';
+            info.innerHTML = 'Echec de l\'envoi du fichier - ' + name;
 
             document.getElementById('upload' + name).className = 'overmouse';
             document.getElementById('upload' + name).style.backgroundColor = '#930F0F99';
             
             FILES.shift();
             FILESERROR.push(name);
-            setTimeout('doFile()', 3000);
+            setTimeout(exe_upload, 3000);
         }
     } else {
-        //do
+        bck.style.backgroundColor = '#C61515';
+        avv.style.backgroundColor = '#930F0F';
+        info.innerHTML = 'Echec de l\'envoi du fichier - ' + name;
+
+        document.getElementById('upload' + name).className = 'overmouse';
+        document.getElementById('upload' + name).style.backgroundColor = '#930F0F99';
+        
+        FILES.shift();
+        FILESERROR.push(name);
+        setTimeout(exe_upload, 3000);
     }
 
     UPLOADSIZE += size;
 }
-function hideUploadStatus() {
+function hide_upload_status() {
     var bck = document.getElementById('uploadbck');
     var perc = document.getElementById('uploadperc');
     var status = document.getElementById('uploadstatus');
@@ -623,27 +595,34 @@ function hideUploadStatus() {
     bck.style.display = 'none';
     perc.style.display = 'none';
     status.style.display = 'none';
+
+    document.getElementById("uploadperc").style.backgroundColor = "#820282";
+
+    window.document.title = "Drive"
 }
 function alternate(){
-    var perc = document.getElementById("perc")
-    var timer = document.getElementById('timer');
-    var uploadstatus = document.getElementById('uploadstatus');
+    const perc = document.getElementById("perc")
+    const timer = document.getElementById('timer');
+    const uploadstatus = document.getElementById('uploadstatus');
 
     if (uploadstatus.style.display == 'block'){
         if (perc.style.display == 'none'){
             perc.style.display = 'block';
             timer.style.display = 'none';
+
         } else {
             perc.style.display = 'none';
             timer.style.display = 'block';
+        
         }
-        setTimeout('alternate()', 3000);
+        setTimeout(alternate, 3000);
     }
 }
 
-/* --- Keyboard control */
+// --- Keyboard control ---
+// 🟢
 
-async function test(el){
+async function control(el){
     var file = document.getElementById('file');
     var dir = document.getElementById('dir');
 
@@ -653,11 +632,11 @@ async function test(el){
         if (typeof ACTION !== 'undefined'){
             if (el.keyCode == 13){ // Enter
                 if (ACTION == 'RM'){
-                    BtnRemoveElement(document.getElementById('rmbtn'));
+                    remove_el(document.getElementById('rmbtn'));
                 }
             } else if (el.keyCode == 27){ // Echap
                 if (ACTION == 'RM'){
-                    BtnHideRemoveBox();
+                    btnhide_remove_el();
                 }
             } 
         } else {
@@ -709,11 +688,11 @@ async function test(el){
             }
             if (el.keyCode == 13){ // Enter
                 if (bckID.className.indexOf('dir') >= 0){
-                    BtnOpenFolder();
+                    open_folder();
                 } 
             } else if (el.keyCode == 46){ // Suppr
                 if (bckID.className.indexOf('el') >= 0){
-                    BtnShowRemoveBox();
+                    btn_remove_el();
                 }
             } else if (el.keyCode == 81){
                 searchfocus();
@@ -732,22 +711,20 @@ async function test(el){
     }
 }
 
-/* --- Info -- */
+// --- Info ---
+// 🟢
 
-async function showInfo(){
+async function show_info(){
     document.getElementById('infos').style.display = 'block';
     document.getElementById('det').style.right = '0px';
-    await getInfo();
+    await get_info();
 }
-function hideInfo(){
+function hide_info(){
     document.getElementById('infos').style.display = 'none';
     document.getElementById('det').style.right = '-100%';
 }
-async function getInfo(){
-    var det = document.getElementById('det');
-
-    var echo = "";
-    var url = IP + 'getInfo.php';
+async function get_info(){
+    var url = IP + '?ctrl=get_info';
 
     let response = await fetch(url);	
 	if (response.status === 200) {
@@ -786,7 +763,7 @@ function imgLoad(){
     }
 }
 function imgError(id){
-    id.src = IP + '/type/error.png';
+    id.src = IP + '/view/type/error.png';
 }
 async function openImg(val){
     document.getElementById('explorer').style.display = 'none';
@@ -799,13 +776,13 @@ async function openImg(val){
     document.getElementById('imgloader').style.display = 'block';
     document.getElementById('imgReader').style.display = 'block';
 
-    var url = IP + 'getContent.php?p=' + val.substring(0,  val.length );
+    var url = IP + '?ctrl=get_content&p=' + val.substring(0,  val.length );
     document.getElementById('viewimg').src = url;
 
     var img = document.getElementById('img');
     img.style.display = "none";
 
-    var url = IP + '/getFileInfo.php?s=1&p=' + val.substring(0,  val.length );
+    url = IP + '?ctrl=get_file_info&s=1&p=' + val.substring(0,  val.length );
     let response = await fetch(url);	
 	if (response.status === 200) {
 		DATA = await response.json();
@@ -864,7 +841,7 @@ async function exitviewer (){
     document.getElementById('viewimg').src = ''
 
     var path = PATH[ipath].substring(0,  PATH[ipath].lastIndexOf('/') );
-    await changePath(path);
+    await change_path(path);
 }
 function fullscreen(){
     var el = document.getElementById('viewer');
@@ -881,16 +858,16 @@ function exitfullscreen(){
     document.getElementById('exitfullscreen').style.display = 'none';
 }
 
+// --- Other ---
+// 🟢
 
-/* --- Other --- */
-function viewOther(){
+function view_other(){
     var val = bckID.getElementsByTagName('input');
-    var url = IP + 'download.php?p=' + PATH[ipath] + val[0].value;
 
-    window.open(url);
+    open_other(PATH[ipath] + val[0].value);
 }
-function openOther(u){
-    var url = IP + 'download.php?p=' + u;
+function open_other(name){
+    var url = IP + '?ctrl=download&p=' + name;
 
     window.open(url);
 }
@@ -911,7 +888,7 @@ async function search(id){
 
     const alltype = ['csv', 'doc', 'docx', 'file', 'folder', 'gif', 'ico', 'jpg', 'mov', 'mp3', 'mp4', 'odt', 'pdf', 'png', 'pptx', 'xls', 'xlsx', 'zip']
 
-    var url = IP + '/search.php?q=' + id.value;
+    var url = IP + '?ctrl=search&q=' + id.value;
     let response = await fetch(url);	
 	if (response.status === 200) {
 		let data = await response.json();
@@ -932,7 +909,7 @@ async function search(id){
             if (alltype.indexOf(type) == -1)
                 type = 'file';
 
-            echo += '<tr onclick="changePath(\'' + path + '\');"><td><img src="' + IP + '/type/' + type + '.png"></td><td>' + name + '</td></tr>';
+            echo += '<tr onclick="change_path(\'' + path + '\');"><td><img src="' + IP + '/view/type/' + type + '.png"></td><td>' + name + '</td></tr>';
 
             if (i == 100)
                 break;
@@ -948,16 +925,16 @@ function hide_search(){
 
 /* --- Ecriture de cookie --- */
 
-async function setSettingsCookie(el){
+async function set_cookie_value(el){
     if (el.checked){
         var value = 1;
     } else {
         var value = 0;
     }
     document.cookie = el.id + '=' + value + '; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/'; 
-    await getFile();
+    await get_file();
 }
-function getCookieValue(name) {
+function get_cookie_value(name) {
     const nameString = name + "="
 
     const value = document.cookie.split(";").filter(item => {
@@ -981,7 +958,7 @@ href = href.substring( href.indexOf(IP) + IP.length );
 if (href.indexOf('.') > IP.length){
     var ext = href.toLowerCase().substring( href.indexOf('.') + 1);
     
-    if (i = ext.indexOf(ImgExt)){
+    if (i = ext.indexOf(img_extension)){
         PATH[ipath] = href;
         openImg(href);
     }
@@ -996,14 +973,14 @@ if (href.indexOf('.') > IP.length){
     PATH[ipath] = href;
 
     /* --- On initialise les cookie --- */
-    if (getCookieValue('displayExtension') == 1){
+    if (get_cookie_value('displayExtension') == 1){
         document.getElementById('displayExtension').checked = true;
     }
-    if (getCookieValue('displayInListMode') == 1){
+    if (get_cookie_value('displayInListMode') == 1){
         document.getElementById('displayInListMode').checked = true;
     }
 
     document.getElementById('searchtext').value = '';
 
-    getFile();
+    get_file();
 }
