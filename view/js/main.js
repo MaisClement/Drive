@@ -327,8 +327,11 @@ async function new_folder(path, name){
             await get_file();
 
         } else {
-            alert(data);
-
+            if (data.indexOf('Permission denied') >= 0){
+                show_overlay('overperm');
+            } else {
+                alert(data);
+            }
         }
     }
 }
@@ -355,12 +358,11 @@ async function rename_el(path, oldname, newname){
         if (data == 'OK'){
             await get_file();
         } else {
-            if (alert.indexOf('Permission denied') >= 0){
+            if (data.indexOf('Permission denied') >= 0){
                 show_overlay('overperm');
             } else {
                 alert(data);
             }
-            
         }
     }
 }
@@ -401,7 +403,11 @@ async function remove_el(){
 		let data = await response.text();
 
         if (data != 'OK'){
-            alert(data);
+            if (data.indexOf('Permission denied') >= 0){
+                show_overlay('overperm');
+            } else {
+                alert(data);
+            }
             await get_file();
 
         } else {
