@@ -156,18 +156,22 @@ function update_path(){
         folder = temppath.substring(0, temppath.indexOf(search));
         chem += folder + '/';
 
-            domel = document.createElement("a");
-            domel.innerHTML = ' > ';
-            path.appendChild(domel);
+            domel[i] = document.createElement("a");
+            domel[i].innerHTML = ' > ';
+            path.appendChild(domel[i]);
 
-            domel = document.createElement("a");
-            domel.innerHTML = folder;
-            domel.style.textAlign = 'center';
-            domel.className = 'path-link';
-            domel.click = (function(){
+            i++;
+
+            domel[i] = document.createElement("a");
+            domel[i].innerHTML = folder;
+            domel[i].style.textAlign = 'center';
+            domel[i].className = 'path-link';
+            domel[i].addEventListener( 'click', function(){
                 change_path(chem.substring(0, chem.length -1));
-            });
-            path.appendChild(domel);
+            } );
+            path.appendChild(domel[i]);
+
+            i++;
 
         temppath = temppath.substring(temppath.indexOf(search) + 1, temppath.length);
     }
