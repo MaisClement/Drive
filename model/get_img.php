@@ -7,12 +7,6 @@
 
 header("Content-Type: image/jpg");
 
-$testGD = get_extension_funcs("gd"); // Grab function list 
-if (!$testGD){
-     echo "GD not even installed."; exit; 
-}
-
-
 $PATH = file_get_contents('./config/PATH.txt');
 $HOST = file_get_contents('./config/HOST.txt');
 
@@ -38,7 +32,6 @@ if(exif_imagetype($filename) == IMAGETYPE_JPEG){
 } else {
     echo 'Something wrong';
 }
-
 
 // Redimensionnement
 imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);

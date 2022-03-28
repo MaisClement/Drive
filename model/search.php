@@ -26,7 +26,7 @@ function search($dir, $query) {
                     $json .= '"' . $dir . '/' . $file . '.dir",';
                 
             } else {
-                if (strpos(FormatName($file), FormatName($query)))
+                if (strpos(' ' . FormatName($file), FormatName($query)))
                     $json .= '"' . $dir . '/' . $file . '",';
                 
             }

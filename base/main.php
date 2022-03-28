@@ -12,4 +12,14 @@ function autoloader_js(){
     return $js;
 }
 
+function check(){
+    // Vérification librairie
+    $testGD = get_extension_funcs("gd"); // Grab function list 
+    if (!$testGD){
+        return false;
+        // "Librairie PHP-GD non installé. Certaines fonctionnalités risquent de ne pas etre opérationelle"
+    }
+    return true;
+}
+
 ?>
