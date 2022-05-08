@@ -118,8 +118,8 @@ foreach ($files as $file){
             $JSON['files'][$i]['fullsize'] = filesize($path . $file);
         }
 
+        $i++;
     }
-    $i++;
 }
 
 echo json_encode($JSON);

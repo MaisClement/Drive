@@ -113,6 +113,8 @@ if (is_file($path)) {
 
         $JSON['prec'] = $perc;
         $JSON['suiv'] = $suiv;
+        $type = strtolower(substr($file, strrpos($file, '.') + 1));
+        $JSON['type'] = $type;
     }
 
 } else {

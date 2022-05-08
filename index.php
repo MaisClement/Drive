@@ -10,6 +10,8 @@
     ini_set('max_input_time', 300);
     ini_set('max_execution_time', 300);
 
+    header('Access-Control-Allow-Origin: *');
+
     //Get config
     $PATH = file_get_contents('./config/PATH.txt');
     $HOST = file_get_contents('./config/HOST.txt');
