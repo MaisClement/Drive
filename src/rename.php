@@ -29,9 +29,6 @@ $path = str_replace($search, $replace, $path);
 $path_new = str_replace($search, $replace, $path_new);
 
 if (!is_dir($path) && !is_file($path) && !is_file( substr($path, 0, -1) )){
-    echo $path;
-    http_response_code(404);
-    exit;
     $json = array(
         'message' => array(
             'code'      =>  (int)       404,
