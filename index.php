@@ -1,16 +1,17 @@
 <?php
-    
-    //Change upload limits
-    ini_set('upload_max_filesize', '4G');
-    ini_set('post_max_size', '4G');
-    ini_set('max_input_time', 300);
-    ini_set('max_execution_time', 300);
 
-    header('Access-Control-Allow-Origin: *');
+//Change upload limits
+ini_set('upload_max_filesize', '4G');
+ini_set('post_max_size', '4G');
+ini_set('max_input_time', 300);
+ini_set('max_execution_time', 300);
+
+header('Access-Control-Allow-Origin: *');
 
 session_start();
 
-function error_handle($errno, $errstr, $errfile, $errline){
+function error_handle($errno, $errstr, $errfile, $errline)
+{
     $report = '### Error ###' . PHP_EOL;
     $report .= "[$errno] $errstr" . PHP_EOL;
     $report .= "Error on line $errline in $errfile";
@@ -62,9 +63,9 @@ $file_react_index = $path . 'build/index.html';
 $search = ['//'];
 $replace = ['/'];
 
-$file = str_replace($search, $replace, $file );
-$file_php = str_replace($search, $replace, $file_php );
-$file_react = str_replace($search, $replace, $file_react );
+$file = str_replace($search, $replace, $file);
+$file_php = str_replace($search, $replace, $file_php);
+$file_react = str_replace($search, $replace, $file_react);
 $file_react_index = str_replace($search, $replace, $file_react_index);
 
 //------------
@@ -80,7 +81,7 @@ try {
         chdir($path);
         include($file_php);
         exit;
-        
+
     } else if (is_file($file)) {
         header('Content-Type: ' . mime_content_type($file));
 
